@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AIX Icon Composer - Cttricks</title>
+	<meta name="description" content="A free image composer tool specially designed to compose icons for your AIX ( AI2 Builders Extension )">
+	<meta name="author" content="Tanish Raj">
+	<meta name="copyright" content="cttricks.com">
+	<meta name="robots" content="index, follow">
+	<link rel="icon" href="./favicon.png">
+	<link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="header_container">
+		<h1><img src="favicon.png">Extension Icon Composer</h1>
+		<p>A free image composer tool specially designed to compose icons for your AIX ( AI2 Builders Extension )</p>
+	</div>
+	<label class="button_upload" for="file_photo">Upload an image</label>
+	<div class="main_container">
+		<img id="sub_loader">
+	</div>
+	<input type="file" id="file_photo" onchange="preview_image(event)" name="item_image" hidden>
+
+	<div class="original_image">
+		<ul id="file_info">
+			<li>Old Image: 512x512 pixel (<b>16.9 KB</b>)</li>
+			<li>New Image: 24x24 pixel (<b>1.2 KB</b>)</li>
+		</ul>
+
+		<p>Base64 Image Data</p>
+		<textarea id="bas64Contaier"></textarea>
+		<p class="all_links">
+			<a href="#" onclick="viewImage(); return false;">View Demo</a>
+			<a id="donwloadBTN" href="#">Download Image</a>
+			<a href="#" onclick="window.location.reload();">Compose another</a>
+		</p>
+	</div>
+	<!--Sub Sets-->
+	<div class="bottom_desc">
+		<p>Key Points About This AIX Icon Composer</p>
+		<ul>
+			<li>AIX Icon Composer is a free image resizer to reduce image size online without losing quality for free. It supports the following image formats: PNG, JPG &amp; JPEG Only.</li>
+			<li>When it comes to an extension icon, prefer using Base64 as it'll not require any 3rd part service neither eat your own server space.</li>
+			<li>You can use the icons on any of your extension for free and without attribution.</li>
+			<li>This site does not keep your images, all of them upload and get resized, compressed, and composed here on your device. We never upload images to our or any 3rd part site.</li>
+			<li>This project is <a href="https://github.com/cttricks/AIX_Icon_Composer" target="_blank">available on my GitHub account and is open source</a>. If you are a geek and want to explore the tool then feel free to explore source code.</li>
+			<li>For questions about this service and any feature requests please contact me on <a href="mailto:help.cttricks@gmail.com">help.cttricks@gmail.com</a>.</li>
+		</ul>
+		<p class="footer">Copyright © 2021 AIX Icon Composer - <a href="https://cttricks.com">Cttricks</a>, All Rights Reserved.</p>
+	</div>
+	<img id='output_image'>
+	<canvas id="canvas_24"></canvas>
+	<script>
+		function formatBytes(bytes, decimals = 2) {
+			if (bytes === 0) return '0 Bytes';
+			const k = 1024;
+			const dm = decimals < 0 ? 0 : decimals;
+			const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+			const i = Math.floor(Math.log(bytes) / Math.log(k));
+			return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+		}
+
+		function getSizeFromBase64String(str) {
+			str = str.replace('data:image/png;base64,', '');
+			var y = 0;
+			if (str.includes('==')) {
+				y = 2;
+			} else if (str.includes('=')) {
+				y = 1;
+			}
+			return formatBytes((str.length * (3 / 4)) - y);
+		}
+
+		function preview_image(event) {
+			var reader = new FileReader();
+			reader.onload = function() {
+				var output = document.getElementById('output_image');
+				var output2 = document.getElementById('sub_loader');
+				output.onerror = function() {
+					console.log("An Error Occured");
+				}
+
+				output.onload = function() {
+					var ulData = '<li>Original Size: ' + this.width + 'x' + this.height + ' pixel ( <b>' + formatBytes(event.target.files[0].size) + '</b> )</li>';
+
+					/*Resize it -> 24px H&W*/
+					var canvas = document.getElementById('canvas_24');
+					canvas.height = canvas.width = 24;
+					var context = canvas.getContext('2d');
+					console.log(output.offsetWidth);
+					console.log(output.offsetHeight);
+					context.drawImage(output, 0, 0, output.offsetWidth, output.offsetHeight, 0, 0, 24, 24);
+
+					/*Resize to 250x250px if bigger then that*/
+					if (this.height > 250) {
+						output2.style.height = "250px";
+					}
+
+					if (this.width > 250) {
+						output2.style.width = "250px";
+					}
+
+					/*Put Image Data In Textarea*/
+					var tArea = document.getElementById('bas64Contaier');
+					tArea.value = canvas.toDataURL('image/png', 0.9);
+
+					/*Hide Main IMage*/
+					output.style.display = "none";
+					canvas.style.display = "none";
+					output2.src = output.src;
+
+					/*Download Button*/
+					var fileName = event.target.files[0].name;
+					fileName = '24px_' + fileName.substring(0, fileName.length - 3) + 'png';
+
+					/*Download Image Button*/
+					var btn = document.getElementById('donwloadBTN');
+					btn.setAttribute('download', fileName);
+					btn.setAttribute('href', tArea.value.replace("image/png", "image/octet-stream"));
+					btn.innerHTML = "Download Image";
+
+					/*Update info*/
+					document.getElementById('file_info').innerHTML = ulData + '<li>New Image: 24x24 pixel ( <b>' + getSizeFromBase64String(tArea.value) + '</b> )</li><li>File Name: ' + fileName + '</li>';
+
+					/*Load UI*/
+					document.getElementsByClassName('main_container')[0].style.display = "grid";
+					document.getElementsByClassName('original_image')[0].style.display = "block";
+					document.getElementsByClassName('button_upload')[0].style.display = "none";
+				}
+
+				output.src = reader.result;
+			}
+
+			reader.readAsDataURL(event.target.files[0]);
+		}
+
+		function viewImage() {
+			var imageData = document.getElementById('bas64Contaier').value;
+			var image = new Image();
+			image.src = imageData;
+
+			var w = window.open("");
+			w.document.write(image.outerHTML);
+		}
+	</script>
+</body>
+
+</html>
