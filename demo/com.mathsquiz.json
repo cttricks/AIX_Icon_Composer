@@ -30,7 +30,7 @@
 	"external": "true",
 	"showOnPalette": "true",
 	"name": "MathsQuiz",
-	"helpString": "You can use this extension to create math problems for a simple kids maths quiz. The questions can be generated according to the difficulty level.The questions of the quiz will always be from Addition, Subtraction, Multiplication & Division.<br><br>Difficulty Level; <ul><li>Easy - Solve one digit equalation!<\/li><li>Moderatre - Solve two/three digit equalation!<\/li><li>Hard -  Solve three/four digit equalation!<\/li><\/ul><br>Made By Ct tricks.<br>For more info visit our webiste<br>https://sites.google.com/view/cttrkcks/home",
+	"helpString": "You can use this extension to create math problems for a simple kids maths quiz. The questions can be generated according to the difficulty level.The questions of the quiz will always be from Addition, Subtraction, Multiplication & Division.<br><br>Difficulty Level; <ul><li>Easy - Solve one digit equalation!<\/li><li>Moderatre - Solve two/three digit equalation!<\/li><li>Hard -  Solve three/four digit equalation!<\/li><\/ul><br>Made By Ct tricks.",
 	"properties": [],
 	"events": [{
 		"deprecated": "false",
