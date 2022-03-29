@@ -30,6 +30,9 @@
 	"external": "true",
 	"showOnPalette": "true",
 	"name": "MathsQuiz",
+	"filesize":"9.16 KB",
+	"license": "MIT",
+	"datePublish": "11 July 2019",
 	"helpString": "You can use this extension to create math problems for a simple kids maths quiz. The questions can be generated according to the difficulty level.The questions of the quiz will always be from Addition, Subtraction, Multiplication & Division.<br><br>Difficulty Level; <ul><li>Easy - Solve one digit equalation!<\/li><li>Moderatre - Solve two/three digit equalation!<\/li><li>Hard -  Solve three/four digit equalation!<\/li><\/ul><br>Made By Ct tricks.",
 	"properties": [],
 	"events": [{
